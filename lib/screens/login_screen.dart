@@ -1,4 +1,6 @@
 import "package:flutter/material.dart";
+import "package:medicom/data/database.dart";
+import "package:medicom/screens/admin_home_screen.dart";
 import "package:medicom/screens/forgot_password_screen.dart";
 import "package:medicom/services/api_document_services.dart";
 import "package:medicom/data/constant.dart" as constant;
@@ -13,7 +15,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
+  final adminDatabase = AdminDatabase();
   bool loading = false;
   bool obscurePassword = true;
 
@@ -67,18 +69,25 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     try {
-      // Replace this with your actual login API method.
-      final message = await ApiService.login(
-        email: email,
-        password: password,
-      );
+      final message = await ApiService.login(email: email, password: password);
 
-      if (message != "Login successful") {
+      if (message != "Login Successful") {
         setState(() {
           passwordError = message;
         });
       } else {
-        // Navigate to your home screen here.
+        await adminDatabase.saveCredentials(email: email, password: password);
+
+        if (!mounted) {
+          return;
+        }
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                AdminHomeScreen(email: email, password: password),
+          ),
+        );
       }
     } catch (e) {
       if (!mounted) {
@@ -129,10 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const Text(
                 "Enter your email and password to continue.",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white70,
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.white70),
               ),
 
               const SizedBox(height: 30),
@@ -163,10 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(
-                      color: Colors.white,
-                      width: 1,
-                    ),
+                    borderSide: const BorderSide(color: Colors.white, width: 1),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -177,17 +180,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   errorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                      width: 1.5,
-                    ),
+                    borderSide: const BorderSide(color: Colors.red, width: 1.5),
                   ),
                   focusedErrorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                      width: 2,
-                    ),
+                    borderSide: const BorderSide(color: Colors.red, width: 2),
                   ),
                 ),
                 onChanged: (_) {
@@ -242,10 +239,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(
-                      color: Colors.white,
-                      width: 1,
-                    ),
+                    borderSide: const BorderSide(color: Colors.white, width: 1),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -256,17 +250,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   errorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                      width: 1.5,
-                    ),
+                    borderSide: const BorderSide(color: Colors.red, width: 1.5),
                   ),
                   focusedErrorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                      width: 2,
-                    ),
+                    borderSide: const BorderSide(color: Colors.red, width: 2),
                   ),
                 ),
                 onChanged: (_) {
