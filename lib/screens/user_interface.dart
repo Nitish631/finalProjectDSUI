@@ -4,6 +4,7 @@ import "package:medicom/data/database.dart";
 import "package:medicom/iomodels/prompt_model.dart";
 import "package:medicom/screens/admin_home_screen.dart";
 import "package:medicom/screens/forgot_password_screen.dart";
+import "package:medicom/screens/login_screen.dart";
 import "package:medicom/services/api_document_services.dart";
 import "package:medicom/services/api_prompt_services.dart";
 import "package:medicom/services/speech.dart";
@@ -169,7 +170,7 @@ class _MainPageState extends State<MainPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => const ForgotPasswordScreen(),
+          builder: (_) => const LoginScreen(),
         ),
       );
     }
