@@ -1,21 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:medicom/interface.dart';
+import 'package:medicom/screens/user_interface.dart';
+
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({
+    super.key,
+  });
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      home:MainPage(),
+      title: "First Aid",
+      theme: ThemeData(
+        useMaterial3: true,
+      ),
+      home:MainPage()
+      // home: const ChangePasswordScreen(email: "ballivalli3@gmail.com",otp: "333333"),
+            // home: const ForgotPasswordScreen(),
+              // home: const AdminHomeScreen(email: "ballivalli3@gmail.com", password: "password"),
+
+
     );
   }
 }
-
