@@ -3,7 +3,6 @@ import "package:medicom/data/constant.dart" as constant;
 import "package:medicom/data/database.dart";
 import "package:medicom/iomodels/prompt_model.dart";
 import "package:medicom/screens/admin_home_screen.dart";
-import "package:medicom/screens/forgot_password_screen.dart";
 import "package:medicom/screens/login_screen.dart";
 import "package:medicom/services/api_document_services.dart";
 import "package:medicom/services/api_prompt_services.dart";
