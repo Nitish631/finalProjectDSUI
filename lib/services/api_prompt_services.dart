@@ -10,7 +10,7 @@ Future<FirstAidResponse> sendMessage(FirstAidRequest request)async {
     url,
     headers: {'Content-Type': 'application/json'},
     body: jsonEncode(request.toJson()),
-  );
+  ).timeout(const Duration(minutes: 10));
   if (response.statusCode == 200) {
     final firstAidResponse= FirstAidResponse.fromJson(jsonDecode(response.body));
     return firstAidResponse;
