@@ -127,66 +127,56 @@ class _MainPageState extends State<MainPage> {
   }
 
   Future<void> openAdmin() async {
-  final credentials = await AdminDatabase().getCredentials();
-
-  if (!mounted) {
-    return;
-  }
-
-  if (credentials == null) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const ForgotPasswordScreen(),
-      ),
-    );
-    return;
-  }
-
-  final email = credentials["email"]!;
-  final password = credentials["password"]!;
-
-  try {
-    final message = await ApiService.login(
-      email: email,
-      password: password,
-    );
+    final credentials = await AdminDatabase().getCredentials();
 
     if (!mounted) {
       return;
     }
 
-    if (message == "Successfully Login") {
+    if (credentials == null) {
       Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (_) => AdminHomeScreen(
-            email: email,
-            password: password,
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+      );
+      return;
+    }
+
+    final email = credentials["email"]!;
+    final password = credentials["password"]!;
+
+    try {
+      final message = await ApiService.login(email: email, password: password);
+
+      if (!mounted) {
+        return;
+      }
+      print("\n\n\n\n\n");
+      print(message);
+      print("\n\n\n\n\n");
+      if (message == "Login Successful") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => AdminHomeScreen(email: email, password: password),
           ),
-        ),
-      );
-    } else {
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const LoginScreen()),
+        );
+      }
+    } catch (e) {
+      if (!mounted) {
+        return;
+      }
+
       Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (_) => const LoginScreen(),
-        ),
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
       );
     }
-  } catch (e) {
-    if (!mounted) {
-      return;
-    }
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const ForgotPasswordScreen(),
-      ),
-    );
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -235,25 +225,22 @@ class _MainPageState extends State<MainPage> {
             ),
 
             Positioned(
-              top: 15,
-              right: 15,
+              top: 20,
+              right: 20,
               child: GestureDetector(
                 onTap: openAdmin,
                 child: Container(
-                  width: 55,
-                  height: 40,
+                  width: 50,
+                  height: 50,
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
+                    color: constant.adminButtonBackgroundColor,
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: Center(
-                    child: Text(
-                      "A",
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: constant.blueText,
-                      ),
+                    child: Icon(
+                      Icons.admin_panel_settings_rounded,
+                      color: constant.adminButtonColor,
+                      size: 30,
                     ),
                   ),
                 ),

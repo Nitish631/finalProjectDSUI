@@ -280,8 +280,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 8),
 
-              Align(
-                alignment: Alignment.centerRight,
+              Center(
                 child: TextButton(
                   onPressed: loading
                       ? null

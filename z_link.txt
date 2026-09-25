@@ -1,3 +1,3 @@
-√ Built build\app\outputs\flutter-apk\app-armeabi-v7a-release.apk (12.3MB)
-√ Built build\app\outputs\flutter-apk\app-arm64-v8a-release.apk (14.9MB)
-√ Built build\app\outputs\flutter-apk\app-x86_64-release.apk (16.2MB)
+√ Built build\app\outputs\flutter-apk\app-armeabi-v7a-release.apk (14.2MB)
+√ Built build\app\outputs\flutter-apk\app-arm64-v8a-release.apk (16.5MB)
+√ Built build\app\outputs\flutter-apk\app-x86_64-release.apk (17.9MB)

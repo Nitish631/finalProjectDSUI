@@ -6,3 +6,5 @@ Color dimBackgroundColor=Color.fromARGB(255, 87, 118, 119);
 Color buttonColor=Color.fromARGB(255, 255, 98, 0);
 Color blueText=Color.fromARGB(255, 0, 13, 255);
 Color greenSwap=Color.fromARGB(255, 0, 255, 55);
+Color adminButtonBackgroundColor = Color.fromARGB(255, 20, 20, 20);
+Color adminButtonColor = Color.fromARGB(255, 255, 234, 0);

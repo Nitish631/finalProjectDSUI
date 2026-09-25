@@ -59,9 +59,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          content: Text(
-            e.toString().replaceFirst("Exception: ", ""),
-          ),
+          content: Text(e.toString().replaceFirst("Exception: ", "")),
         ),
       );
     } finally {
@@ -136,9 +134,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          content: Text(
-            e.toString().replaceFirst("Exception: ", ""),
-          ),
+          content: Text(e.toString().replaceFirst("Exception: ", "")),
         ),
       );
 
@@ -195,9 +191,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          content: Text(
-            e.toString().replaceFirst("Exception: ", ""),
-          ),
+          content: Text(e.toString().replaceFirst("Exception: ", "")),
         ),
       );
 
@@ -217,17 +211,12 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           backgroundColor: constant.dimBackgroundColor,
           title: const Text(
             "Delete Document",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           content: Text(
             "Are you sure you want to delete "
             "${document.filename}?",
-            style: const TextStyle(
-              color: Colors.white70,
-            ),
+            style: const TextStyle(color: Colors.white70),
           ),
           actions: [
             TextButton(
@@ -236,9 +225,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
               },
               child: Text(
                 "Cancel",
-                style: TextStyle(
-                  color: constant.backgroundColor,
-                ),
+                style: TextStyle(color: constant.backgroundColor),
               ),
             ),
             ElevatedButton(
@@ -276,9 +263,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          content: const Text(
-            "Document deleted successfully",
-          ),
+          content: const Text("Document deleted successfully"),
         ),
       );
 
@@ -293,260 +278,219 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          content: Text(
-            e.toString().replaceFirst("Exception: ", ""),
-          ),
+          content: Text(e.toString().replaceFirst("Exception: ", "")),
         ),
       );
     }
   }
 
+  void goToMainPage() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => const MainPage()),
+      (_) => false,
+    );
+  }
+
   void logout() {
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(
-        builder: (_) => const MainPage(),
-      ),
+      MaterialPageRoute(builder: (_) => const MainPage()),
       (_) => false,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: constant.backgroundColor,
-
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult:(didPop, result){
+        if(!didPop){
+          goToMainPage();
+        }
+      },
+      child: Scaffold(
         backgroundColor: constant.backgroundColor,
-        foregroundColor: Colors.white,
-        elevation: 0,
-        title: const Text(
-          "Admin",
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
+      
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: constant.backgroundColor,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          title: const Text(
+            "Admin",
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          ),
+          actions: [
+            IconButton(
+              onPressed: loading ? null : loadDocuments,
+              icon: const Icon(Icons.refresh),
+            ),
+            IconButton(onPressed: logout, icon: const Icon(Icons.logout)),
+          ],
+        ),
+      
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 40),
+          child: FloatingActionButton.extended(
+            onPressed: loading ? null : uploadDocument,
+            backgroundColor: constant.buttonColor,
+            foregroundColor: Colors.white,
+            icon: const Icon(Icons.add),
+            label: const Text(
+              "Add PDF",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: loading ? null : loadDocuments,
-            icon: const Icon(Icons.refresh),
-          ),
-          IconButton(
-            onPressed: logout,
-            icon: const Icon(Icons.logout),
-          ),
-        ],
-      ),
-
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: loading ? null : uploadDocument,
-        backgroundColor: constant.buttonColor,
-        foregroundColor: Colors.white,
-        icon: const Icon(Icons.add),
-        label: const Text(
-          "Add PDF",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-
-      body: SafeArea(
-        child: loading
-            ? const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                ),
-              )
-            : documents.isEmpty
-                ? RefreshIndicator(
-                    onRefresh: loadDocuments,
-                    color: constant.backgroundColor,
-                    child: ListView(
-                      physics:
-                          const AlwaysScrollableScrollPhysics(),
-                      children: const [
-                        SizedBox(height: 250),
-                        Center(
-                          child: Text(
-                            "No PDF documents found",
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.white,
-                            ),
+      
+        body: SafeArea(
+          child: loading
+              ? const Center(
+                  child: CircularProgressIndicator(color: Colors.white),
+                )
+              : documents.isEmpty
+              ? RefreshIndicator(
+                  onRefresh: loadDocuments,
+                  color: constant.backgroundColor,
+                  child: ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: const [
+                      SizedBox(height: 250),
+                      Center(
+                        child: Text(
+                          "No PDF documents found",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : RefreshIndicator(
+                  onRefresh: loadDocuments,
+                  color: constant.backgroundColor,
+                  child: ListView.builder(
+                    padding: const EdgeInsets.fromLTRB(16, 10, 16, 90),
+                    itemCount: documents.length,
+                    itemBuilder: (context, index) {
+                      final document = documents[index];
+      
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 14),
+                        decoration: BoxDecoration(
+                          color: constant.dimBackgroundColor,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: const Icon(
+                                      Icons.picture_as_pdf,
+                                      color: Colors.red,
+                                      size: 30,
+                                    ),
+                                  ),
+      
+                                  const SizedBox(width: 12),
+      
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          document.filename,
+                                          style: const TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+      
+                                        const SizedBox(height: 6),
+      
+                                        Text(
+                                          "Status: ${document.status}",
+                                          style: const TextStyle(
+                                            color: Colors.white70,
+                                          ),
+                                        ),
+      
+                                        const SizedBox(height: 3),
+      
+                                        Text(
+                                          "ID: ${document.documentId}",
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.white54,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+      
+                              const SizedBox(height: 14),
+      
+                              const Divider(color: Colors.white24, height: 1),
+      
+                              const SizedBox(height: 8),
+      
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton.icon(
+                                    onPressed: loading
+                                        ? null
+                                        : () => updateDocument(document),
+                                    icon: const Icon(
+                                      Icons.edit,
+                                      color: Colors.white,
+                                    ),
+                                    label: const Text(
+                                      "Edit",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+      
+                                  const SizedBox(width: 8),
+      
+                                  TextButton.icon(
+                                    onPressed: loading
+                                        ? null
+                                        : () => deleteDocument(document),
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
+                                    label: const Text(
+                                      "Delete",
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  )
-                : RefreshIndicator(
-                    onRefresh: loadDocuments,
-                    color: constant.backgroundColor,
-                    child: ListView.builder(
-                      padding: const EdgeInsets.fromLTRB(
-                        16,
-                        10,
-                        16,
-                        90,
-                      ),
-                      itemCount: documents.length,
-                      itemBuilder: (context, index) {
-                        final document = documents[index];
-
-                        return Container(
-                          margin: const EdgeInsets.only(
-                            bottom: 14,
-                          ),
-                          decoration: BoxDecoration(
-                            color:
-                                constant.dimBackgroundColor,
-                            borderRadius:
-                                BorderRadius.circular(12),
-                          ),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.all(16),
-                            child: Column(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: 50,
-                                      height: 50,
-                                      decoration:
-                                          BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius
-                                                .circular(8),
-                                      ),
-                                      child: const Icon(
-                                        Icons.picture_as_pdf,
-                                        color: Colors.red,
-                                        size: 30,
-                                      ),
-                                    ),
-
-                                    const SizedBox(width: 12),
-
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment
-                                                .start,
-                                        children: [
-                                          Text(
-                                            document.filename,
-                                            style:
-                                                const TextStyle(
-                                              fontSize: 17,
-                                              fontWeight:
-                                                  FontWeight
-                                                      .bold,
-                                              color:
-                                                  Colors.white,
-                                            ),
-                                          ),
-
-                                          const SizedBox(
-                                            height: 6,
-                                          ),
-
-                                          Text(
-                                            "Status: ${document.status}",
-                                            style:
-                                                const TextStyle(
-                                              color: Colors
-                                                  .white70,
-                                            ),
-                                          ),
-
-                                          const SizedBox(
-                                            height: 3,
-                                          ),
-
-                                          Text(
-                                            "ID: ${document.documentId}",
-                                            style:
-                                                const TextStyle(
-                                              fontSize: 12,
-                                              color:
-                                                  Colors.white54,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                                const SizedBox(height: 14),
-
-                                const Divider(
-                                  color: Colors.white24,
-                                  height: 1,
-                                ),
-
-                                const SizedBox(height: 8),
-
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.end,
-                                  children: [
-                                    TextButton.icon(
-                                      onPressed: loading
-                                          ? null
-                                          : () =>
-                                              updateDocument(
-                                                document,
-                                              ),
-                                      icon: const Icon(
-                                        Icons.edit,
-                                        color: Colors.white,
-                                      ),
-                                      label: const Text(
-                                        "Edit",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(width: 8),
-
-                                    TextButton.icon(
-                                      onPressed: loading
-                                          ? null
-                                          : () =>
-                                              deleteDocument(
-                                                document,
-                                              ),
-                                      icon: const Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
-                                      ),
-                                      label: const Text(
-                                        "Delete",
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                      );
+                    },
                   ),
+                ),
+        ),
       ),
     );
   }

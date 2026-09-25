@@ -22,9 +22,6 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home:MainPage()
-      // home: const ChangePasswordScreen(email: "ballivalli3@gmail.com",otp: "333333"),
-            // home: const ForgotPasswordScreen(),
-              // home: const AdminHomeScreen(email: "ballivalli3@gmail.com", password: "password"),
 
 
     );
